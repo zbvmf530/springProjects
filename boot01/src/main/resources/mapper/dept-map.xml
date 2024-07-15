@@ -19,13 +19,13 @@
 		WHERE department_id = #{departmentId}
 	</select>
 	<insert id="insertDeptInfo" parameterType="com.yedam.app.dept.service.DeptVO">
-		<selectKey keyProperty="empid" resultType="Integer" order="BEFORE">
-			SELECT NVL(MAX(departmentId),0)+1
+		<selectKey keyProperty="departmentId" resultType="Integer" order="BEFORE">
+			SELECT NVL(MAX(department_id),0)+1
 			FROM departments
 		</selectKey>
 		INSERT INTO departments
 				(
-				  	departmentId, 
+				  	department_id, 
 					department_name, 
 					manager_id, 
 					location_id

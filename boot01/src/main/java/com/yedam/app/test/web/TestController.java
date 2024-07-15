@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yedam.app.dept.mapper.DeptMapper;
@@ -53,21 +52,29 @@ public class TestController {
 	}
 	
 	
-
-	
-//	@RequestMapping("deptLists")
-//	@ResponseBody
-//	public String deptTest(String keyword) {
-//		return "Server Response: "+keyword;
-//	}
-	
-	// @RequestMapping(path="/sample", method=RequestMethod.GET)
 	@GetMapping("deptLists")
 	@ResponseBody
-	public List<DeptVO> deptTest(String keyword) {
+	public List<DeptVO> deptLists() {
 		List<DeptVO> deptList = new ArrayList<DeptVO>();
 		deptList = deptMapper.selectDeptAll();
 		return deptList;
 	}
 	
+	
+	@GetMapping("deptInformation")
+	@ResponseBody
+	public DeptVO deptInfo(DeptVO deptVO) {
+		
+		DeptVO dept = deptMapper.selectDeptInfo(deptVO);
+		
+		return dept;
+	}
+	
+	@PostMapping("addDept")
+	@ResponseBody
+	public int addDept(DeptVO DeptVO) {
+		// TODO Auto-generated method stub
+		int result = deptMapper.insertDeptInfo(DeptVO);
+		return result == 1 ? DeptVO.getDepartmentId() : -1;
+	}
 }
