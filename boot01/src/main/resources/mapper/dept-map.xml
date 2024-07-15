@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.app.dept.mapper.DeptMapper">
+	<!-- 
+	#{}:PreparedStatement->데이터 타입에 따른 작업
+	${}:Statement => 데이터 타입을 무시
+	 -->
+	<!-- 전체조회 -->
+	<select id="selectDeptAll" resultType="com.yedam.app.dept.service.DeptVO">
+		SELECT department_id, department_name, manager_id, location_id
+		FROM departments
+		ORDER BY department_id
+	</select>
+	
+	<!-- 단건조회 -->
+	<select id="selectDeptInfo" resultType="com.yedam.app.dept.service.DeptVO">
+		SELECT department_id, department_name, manager_id, location_id
+		FROM departments
+		WHERE department_id = #{departmentId}
+	</select>
+	<insert id="insertDeptInfo" parameterType="com.yedam.app.dept.service.DeptVO">
+		<selectKey keyProperty="empid" resultType="Integer" order="BEFORE">
+			SELECT NVL(MAX(departmentId),0)+1
+			FROM departments
+		</selectKey>
+		INSERT INTO departments
+				(
+				  	departmentId, 
+					department_name, 
+					manager_id, 
+					location_id
+				 )
+		VALUES
+				(
+					<!-- emp_seq.NEXTVAL, -->
+					#{departmentId},
+					#{departmentName},
+					#{managerId},
+					#{locationId}
+				)
+	</insert>
+	
+	<!-- 매개변수 두개시 파라미터타입생략가능 -->
+	<update id="updateDeptInfo">
+		UPDATE departments
+		SET department_name = #{dept.departmentName},
+			manager_id = #{dept.managerId}
+		WHERE departmentId = #{id}
+	</update>
+	
+	<delete id="deleteDeptInfo" parameterType="int">
+		DELETE FROM departments
+		WHERE department_id=#{id}
+	</delete>
+	
+</mapper>

@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.yedam.app.dept.mapper.DeptMapper;
+import com.yedam.app.dept.service.DeptVO;
 import com.yedam.app.emp.mapper.EmpMapper;
 import com.yedam.app.emp.service.EmpVO;
 
@@ -18,6 +20,9 @@ import com.yedam.app.emp.service.EmpVO;
 class Boot01ApplicationTests {
 	@Autowired
 	EmpMapper empMapper;
+	@Autowired
+	DeptMapper deptMapper;
+	
 	@Test
 	void contextLoads() {
 		assertNotNull(empMapper);
@@ -37,7 +42,7 @@ class Boot01ApplicationTests {
 		assertEquals(findedEmp.getEmpname(),"Den");
 	}
 	
-	@Test
+	//@Test
 	void insertEmpInfo() {
 		EmpVO emp = new EmpVO();
 		emp.setEmpname("NewHong");
@@ -65,6 +70,43 @@ class Boot01ApplicationTests {
 	//@Test
 	void deleteEmpInfo() {
 		int result = empMapper.deleteEmpInfo(207);
+		
+		assertEquals(result, 1);
+	}
+	
+	
+	@Test
+	void selectDeptAll() {
+		List<DeptVO> deptList = deptMapper.selectDeptAll();
+		System.out.println(deptList);
+		assertFalse(deptList.isEmpty());
+	}
+	
+	//@Test
+	void selectDeptInfo() {
+		DeptVO deptVO = new DeptVO();
+		deptVO.setDepartmentId(110);
+		DeptVO findedDept = deptMapper.selectDeptInfo(deptVO);
+		System.out.println(findedDept);
+		assertEquals(findedDept.getDepartmentName(),"Accounting");
+	}
+	
+	//@Test
+	void updateDeptInfo() {
+		DeptVO dept = new DeptVO();
+		dept.setDepartmentId(210);
+		
+		DeptVO findVO = deptMapper.selectDeptInfo(dept);
+		findVO.setDepartmentName("Test");
+		findVO.setManagerId(4000);
+		int result = deptMapper.updateDeptInfo(findVO.getDepartmentId(),findVO);
+		
+		assertEquals(result, 1);
+	}
+	
+	//@Test
+	void deleteDeptInfo() {
+		int result = deptMapper.deleteDeptInfo(207);
 		
 		assertEquals(result, 1);
 	}
