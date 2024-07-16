@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/default_layout}"
+	  layout:fragment="Content">
+<head>
+<meta charset="UTF-8">
+<title>insert.html</title>
+</head>
+<style>
+    .container-custom {
+        width: 80%;
+        max-width: 80%;
+    }
+</style>
+
+<body>
+<div class="container container-custom">
+	<h3>사원 정보 등록</h3>
+	<form name="insertForm" th:action="@{/empInsert}" method="post">
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="input2">이름</label> <input
+				type="text" id="input2" class="form-control" name="empname" 
+				 >
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="input3">상사번호</label> <input
+				type="number" id="input3" class="form-control" name="mgr" 
+				 >
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="input4">급여</label> <input
+				type="number" id="input4" class="form-control" name="sal" 
+				 >
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="input5">부서번호</label> <input
+				type="number" id="input5" class="form-control" name="deptid" min="0" max="99"
+				>
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="input6">입사일자</label> <input
+				type="date" id="input6" class="form-control" name="hiredate"
+				>
+		</div>
+	
+		<div class="text-center">
+			<button type="submit" class="btn btn-primary">등록</button>
+		</div>
+	</form>
+	</div>
+<script>
+	insertForm.addEventListener('submit',function(event){
+		event.preventDefault();
+		let ename = document.querySelector('input[name="empname"]');
+		if(ename.value == ''){
+			swal({
+				  title: "입력오류!",
+				  text: "이름은 필수 값입니다.",
+				  icon: "warning",
+				  });
+			ename.focus();
+			return;
+			}
+		let emgr = document.querySelector('input[name="mgr"]');
+		if(emgr.value == ''){
+			swal({
+				  title: "입력오류!",
+				  text: "상사번호는 필수 값입니다.",
+				  icon: "warning",
+				  });
+			emgr.focus();
+			return;
+			}
+		
+		let esal = document.querySelector('input[name="sal"]');
+		if(esal.value == ''){
+			swal({
+				  title: "입력오류!",
+				  text: "급여는 필수 값입니다.",
+				  icon: "warning",
+				  });
+			esal.focus();
+			return;
+			}else if(esal.value<1000||esal.value>99999){
+				swal({
+					  title: "입력오류!",
+					  text: "급여범위는 1000부터 99999사이입니다.",
+					  icon: "warning",
+					  });
+				esal.focus();
+				return;
+			}	
+		
+		
+		
+		
+		
+		
+	});
+</script>
+</body>
+</html>

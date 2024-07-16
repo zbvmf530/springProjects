@@ -9,7 +9,8 @@ import lombok.Data;
 @Data
 public class EmpVO {
 	private Integer empid;
-	private int mgr, deptid;
+	private int mgr;
+	private Integer deptid;
 	private double sal;
 	private String empname;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

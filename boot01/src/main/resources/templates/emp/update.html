@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/default_layout}"
+	  layout:fragment="Content">
+<head>
+<meta charset="UTF-8">
+<title>empUpdate.html</title>
+<style>
+    .container-custom {
+        width: 80%;
+        max-width: 80%;
+    }
+</style>
+</head>
+<body>
+<div class="container container-custom">
+	<h3>사원 정보 수정</h3>
+	<form name="updateForm" th:object="${empInfo}">
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="empid">사원번호</label> 
+			<input type="text" class="form-control" th:field="*{empid}" readonly>
+		</div>
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="empname">이름</label> 
+			<input type="text" class="form-control" th:field="*{empname}">
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="mgr">상사번호</label> 
+			<input type="number" class="form-control" th:field="*{mgr}">
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="sal">급여</label> 
+			<input type="number" class="form-control" th:field="*{sal}">
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="deptid">부서번호</label> 
+			<input type="number" class="form-control"  min="0" max="99" th:field="*{deptid}">
+		</div>
+		
+		<div class="input-group mb-3">
+			<label class="input-group-text" for="hiredate">입사일자</label> 
+			<input type="date" class="form-control" th:field="*{hiredate}">
+		</div>
+	
+		<div class="text-center">
+			<button type="button" class="btn btn-primary">수정</button>
+		</div>
+	</form>
+	</div>
+	<script>
+		$('form[name="updateForm"] button').on('click', updateAjax)
+		
+		function updateAjax(event){
+			
+			// 1) 유효성 체크
+			if(validationCheck()==false) return;
+			// 2) 서버에 보낼 데이터 정리
+			let dataObj = getEmpObj();
+			console.log(dataObj);
+			// 3) AJAX => @ResponseBody
+			// querystring방식
+			// $.ajax('empUpdate',{
+			// 	type: 'post', // 통신 method : post, get, put, delete
+			// 	data: dataObj	  // 기본 객체타입, 자동으로 QueryString 변환
+			// })
+			// .done(result=>{
+			// 	console.log(result);
+			// })
+			// .fail(err=>console.log(err));
+			
+			// json 방식
+			$.ajax('empUpdate',{
+				type: 'post', // 통신 method : post, get, put, delete
+				contentType : 'application/json',
+				//->@RequestBody
+				data : JSON.stringify(dataObj)
+			})
+			.done(result=>{
+				console.log(result);
+				 	swal({
+				 	  title: "수정완료!",
+				 	  text: "직원 정보가 수정되었습니다.",
+				 	  icon: "success",
+				 	  });
+				// if(result.result){
+				// }
+			})
+			.fail(err=>{
+				swal({
+					  title: "수정실패!",
+					  text: "콘솔을 확인해주세요.",
+					  icon: "warning",
+					  });
+				console.log(err);
+			});
+		}
+		
+		function validationCheck(){
+			let ename = $('[name="empname"]');
+			if(ename.val == ''){
+				swal({
+					  title: "입력오류!",
+					  text: "이름은 필수 값입니다.",
+					  icon: "warning",
+					  });
+				ename.focus();
+				return false;
+				}
+			
+			let esal = $('[name="sal"]');
+			if(esal.val == ''){
+				swal({
+					  title: "입력오류!",
+					  text: "급여는 필수 값입니다.",
+					  icon: "warning",
+					  });
+				esal.focus();
+				return false;
+				}else if(esal.val<1000||esal.val>99999){
+					swal({
+						  title: "입력오류!",
+						  text: "급여범위는 1000부터 99999사이입니다.",
+						  icon: "warning",
+						  });
+					esal.focus();
+					return false;
+				}	
+			return true;
+		}
+		function getEmpObj(){
+			let formAry = $('form[name="updateForm"]').serializeArray();
+			// javascript => FormData
+			// [{name: 'empid', value:'209'},...]
+			let formObj = {};
+			$.each(formAry,(idx,input)=>{
+				formObj[input.name] = input.value;
+			});
+
+			return formObj;
+		}
+	</script>
+</body>
+</html>

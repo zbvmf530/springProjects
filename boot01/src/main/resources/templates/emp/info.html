@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/default_layout}"
+	  layout:fragment="Content">
+<head>
+<meta charset="UTF-8">
+<style>
+    .container-custom {
+        width: 80%;
+        max-width: 80%;
+    }
+</style>
+<title>empinfo.html</title>
+</head>
+<body>
+<div class="container container-custom">
+	<h3>사원 정보 조회</h3>
+	<div class="input-group mb-3">
+		<label class="input-group-text" for="input1">사원번호</label> <input
+			type="number" id="input1" class="form-control"
+			th:value="${empInfo.empid}" readonly>
+	</div>
+	
+	<div class="input-group mb-3">
+		<label class="input-group-text" for="input2">이름</label> <input
+			type="text" id="input2" class="form-control"
+			th:value="${empInfo.empname}" readonly>
+	</div>
+	
+	<div class="input-group mb-3">
+		<label class="input-group-text" for="input3">상사번호</label> <input
+			type="number" id="input3" class="form-control"
+			th:value="${empInfo.mgr}" readonly>
+	</div>
+	
+	<div class="input-group mb-3">
+		<label class="input-group-text" for="input4">급여</label> <input
+			type="number" id="input4" class="form-control"
+			th:value="${empInfo.sal}" readonly>
+	</div>
+	
+	<div class="input-group mb-3">
+		<label class="input-group-text" for="input5">부서번호</label> <input
+			type="number" id="input5" class="form-control"
+			th:value="${empInfo.deptid}" readonly>
+	</div>
+	
+	<div class="input-group mb-3">
+		<label class="input-group-text" for="input6">입사일자</label> <input
+			type="date" id="input6" class="form-control"
+			th:value="${#dates.format(empInfo.hiredate, 'yyyy-MM-dd')}" readonly>
+	</div>
+
+
+	<div class="text-center">
+		<button class="btn btn-primary" th:onclick="|location.href='@{/empUpdate(empid=${empInfo.empid})}'|">수정</button>
+		<button class="btn btn-secondary" th:onclick="|location.href='@{/empList}'|">목록</button>
+		<button class="btn btn-danger" th:onclick="deleteEmp()">삭제</button>
+	</div>
+	</div>
+<script>
+
+function deleteEmp(){
+	//let eId = $('input[id="input1"]').val();
+	//console.log(eId);
+	let url = '/empList';
+	swal({
+		  title: "정말 삭제하시겠습니까?",
+		  text: "삭제된 사원은 복구할 수 없습니다.",
+		  icon: "warning",
+		  buttons: true,
+		  dangerMode: true,
+		})
+		.then((willDelete) => {
+		  if (willDelete) {
+		    swal("삭제 완료!", {
+		      icon: "success",
+		    }).then(res=>{
+		    	if(res){
+		    		location.href = url;
+		    	}
+		    	});
+		  } else {
+		    swal("취소 완료!",{
+		    	icon: "success"
+		    });
+		  }
+		});
+}
+	</script>
+</body>
+</html>
