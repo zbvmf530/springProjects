@@ -72,7 +72,10 @@
 	<!-- 매개변수 두개시 파라미터타입생략가능 -->
 	<update id="updateEmpInfo">
 		UPDATE emp
-		SET empname = #{emp.empname},
+		SET 
+			<if test="emp.empname != null and !emp.empname.equals('')">
+			empname = #{emp.empname},
+			</if>
 			sal = #{emp.sal},
 			deptid = #{emp.deptid}
 		WHERE empid = #{id}
