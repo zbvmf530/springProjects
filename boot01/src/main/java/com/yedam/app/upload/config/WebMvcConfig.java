@@ -9,13 +9,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer{
 	@Value("${file.upload.path}")
 	private String uploadPath;
-	// 경로등록
+
+	//경로 등록
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		// TODO Auto-generated method stub
 		registry
-			.addResourceHandler("/images/**") //URL
-			.addResourceLocations("file:///"+uploadPath,""); //실제경로
+			.addResourceHandler("/images/**")    // URL
+			.addResourceLocations("file:///"+uploadPath , ""); //실제 경로
 	}
 
 }

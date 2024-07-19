@@ -1,0 +1,52 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.app.book.mapper.BookMapper">
+
+	<select id="getBookList" resultType="com.yedam.app.book.service.BookVO">
+		SELECT book_no,
+			   book_name,
+			   book_price,
+			   book_publisher,
+			   book_info,
+			   book_coverimg,
+			   book_date
+		FROM book_tbl_06
+		ORDER BY book_no
+	</select>
+	<select id="getMaxBookNo">
+		SELECT MAX(book_no) AS book_no
+		FROM book_tbl_06
+	</select>
+	<select id="getBook" parameterType="com.yedam.app.book.service.BookVO"
+		resultType="com.yedam.app.book.service.BookVO">
+		SELECT book_no,
+			   book_name,
+			   book_price,
+			   book_publisher,
+			   book_info,
+			   book_coverimg,
+			   book_date 
+		FROM book_tbl_06
+	</select>
+
+	<insert id="insertBook" parameterType="com.yedam.app.book.service.BookVO">
+		INSERT INTO
+		book_tbl_06 (
+				  	   book_no,
+					   book_name,
+					   book_price,
+					   book_publisher,
+					   book_info,
+					   book_coverimg,
+					   book_date 
+					)
+		VALUES (
+				#{bookNo},
+				#{bookName},
+				#{bookPrice},
+				#{bookPublisher},
+				#{bookInfo},
+				#{bookCoverimg},
+				#{bookDate}
+			    )
+	</insert>
+</mapper>

@@ -58,15 +58,14 @@ public class BoardController {
 	@PostMapping("boardInsert")
 	public String brdInsertProcess(BoardVO boardVO) {
 		int bno = brdService.brdInsert(boardVO);
-		return "boardInfo?boardNo="+bno;
+		return "redirect:boardInfo?boardNo="+bno;
 	}
 	
 	// 수정 - 페이지 : URI - boardUpdate / PARAMETER - BoardVO(QueryString)
 	//               RETURN - board/boardUpdate
 	@GetMapping("boardUpdate")
 	public String brdUpdateForm(BoardVO boardVO, Model model) {
-		
-		model.addAttribute("brdInfo",boardVO);
+		model.addAttribute("board",brdService.brdInfo(boardVO));
 		return "board/boardUpdate";
 	}
 	// 수정 - 처리 : URI - boardUpdate / PARAMETER - BoardVO(JSON)
